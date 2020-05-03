@@ -130,13 +130,12 @@ covid_pop <- covid %>%
     case_pc_grp = factor(
       case_when(
         cases == 0 ~ "None",
-        cases_pc < 1 ~ "Less than 1",
-        cases_pc >= 1 & cases_pc < 3 ~ "1 to 3",
-        cases_pc >= 3 & cases_pc < 5 ~ "3 to 5",
-        cases_pc >= 5 & cases_pc < 10 ~ "5 to 10",
-        TRUE ~ "10 and up"
+        cases_pc < 5 ~ "Less than 5",
+        cases_pc >= 5 & cases_pc < 20 ~ "5 to 20",
+        cases_pc >= 20 & cases_pc < 75 ~ "20 to 75",
+        TRUE ~ "75 and up"
       ), 
-      levels = c("None", "Less than 1", "1 to 3", "3 to 5", "5 to 10", "10 and up")
+      levels = c("None", "Less than 5", "5 to 20", "20 to 75", "75 and up")
     ),
     death_pc_grp = factor(
       case_when(
@@ -155,7 +154,7 @@ covid_pop <- covid %>%
 ggplot(covid_pop) +
   geom_sf(aes(fill = case_pc_grp), size = 0) +
   geom_sf(data = states, fill = NA, lwd = 0.2) +
-  scale_fill_manual(values = c("white", carto_pal(5, "Mint"))) +
+  scale_fill_manual(values = c("white", carto_pal(4, "Mint"))) +
   labs(title = "Confirmed COVID-19 Cases Per Capita", subtitle = unique(today$date), 
        fill = "Cases per\n10k people", 
        caption = "Data from The New York Times, American Community Survey\nMap by @BenInquiring") +
